@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1 class="app-name">Expense Tracker App</h1>
+        <button class="sign-in-btn">Sign In</button>
+    </div>
+
+    <div class="container">
+        <h1>💸 Expense Tracker</h1>
+
+        <div class="input-section">
+            <input type="text" id="expense-name" placeholder="Expense Name">
+            <input type="number" id="expense-amount" placeholder="Amount">
+            <button onclick="addExpense()">Add Expense</button>
+        </div>
+
+        <h2>Your Expenses</h2>
+        <div id="expense-list">
+            <!-- Initial expenses will be populated here by JavaScript -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+body {
+    background-color: #121212;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header with app name and sign-in button */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1e1e1e;
+}
+
+.app-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1abc9c;  /* Teal color */
+}
+
+.sign-in-btn {
+    padding: 8px 16px;
+    background-color: #2ecc71;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.sign-in-btn:hover {
+    background-color: #27ae60;
+}
+
+/* Container for the rest of the content */
+.container {
+    max-width: 700px;
+    margin: auto;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #1abc9c;  /* Teal color */
+}
+
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-section input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.input-section button {
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input-section button:hover {
+    background-color: #27ae60;
+}
+
+#expense-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.expense-card {
+    background-color: #2c2c2c;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.expense-card:hover {
+    transform: scale(1.05);
+}
+
+.expense-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.expense-card p {
+    color: #aaa;
+    margin: 5px 0 0;
+}
+
+.remove-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #c0392b;
+}
+
+// Function to add an expense
+function addExpense() {
+    const name = document.getElementById('expense-name').value;
+    const amount = document.getElementById('expense-amount').value;
+
+    if (name === '' || amount === '') {
+        alert('Please fill out both fields.');
+        return;
+    }
+
+    const expenseList = document.getElementById('expense-list');
+    const expenseCard = document.createElement('div');
+    expenseCard.className = 'expense-card';
+    expenseCard.innerHTML = `
+        <h3>${name}</h3>
+        <p>Amount: ₹${amount}</p>
+        <button class="remove-btn" onclick="removeExpense(this)">❌</button>
+    `;
+
+    expenseList.appendChild(expenseCard);
+
+    document.getElementById('expense-name').value = '';
+    document.getElementById('expense-amount').value = '';
+}
+
+// Function to remove an expense
+function removeExpense(button) {
+    const expenseCard = button.closest('.expense-card');
+    expenseCard.remove();
+}
+
+// Function to populate initial expenses
+function populateInitialExpenses() {
+    const initialExpenses = [
+        { name: 'Groceries', amount: 1500 },
+        { name: 'Internet Bill', amount: 500 },
+        { name: 'Transport', amount: 300 },
+        { name: 'Electricity Bill', amount: 1000 },  // Added expense
+    ];
+
+    const expenseList = document.getElementById('expense-list');
+
+    initialExpenses.forEach(expense => {
+        const expenseCard = document.createElement('div');
+        expenseCard.className = 'expense-card';
+        expenseCard.innerHTML = `
+            <h3>${expense.name}</h3>
+            <p>Amount: ₹${expense.amount}</p>
+            <button class="remove-btn" onclick="removeExpense(this)">❌</button>
+        `;
+
+        expenseList.appendChild(expenseCard);
+    });
+}
+
+// Call the function to populate initial expenses when the page loads
+window.onload = populateInitialExpenses;
